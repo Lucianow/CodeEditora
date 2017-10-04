@@ -14,6 +14,9 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(App\User::class, function (Faker $faker) {
+
+
+
     static $password;
 
     return [
@@ -21,5 +24,22 @@ $factory->define(App\User::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
+    ];
+});
+
+
+$factory->define(App\Category::class, function (Faker $faker) {
+
+    return [
+        'name' => ucfirst($faker->unique()->word),
+
+    ];
+});
+
+$factory->define(App\Book::class, function (Faker $faker) {
+    return [
+        'title' => $faker->sentence(2),
+        'subtitle' => $faker->sentence(4),
+        'price' => $faker->randomFloat(2, 10, 80),
     ];
 });
