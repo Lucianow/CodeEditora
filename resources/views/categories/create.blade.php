@@ -2,19 +2,25 @@
 
 @section('content')
     <div class="container">
+
+
+
         <div class="row">
             <h3>Nova Categoria</h3>
-
         </div>
+
         <div class="row">
             <form class="form-horizontal" method="post" action="{{ route('categories.store') }}">
 
                 {{ csrf_field()}}
 
                 <div class="form-group">
-                    <label for="" class="col-sm-2 control-label">Categoria</label>
+                    <label for="" class="col-sm-2 control-label">Nome</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="name" placeholder="Insira uma categoria">
+                        <input type="text" class="form-control" name="name" placeholder="Insira o nome da categoria">
+                        <span class="help-block">
+                            <strong>{{ $errors->first('name') }}</strong>
+                        </span>
                     </div>
                 </div>
 

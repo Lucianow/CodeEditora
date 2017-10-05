@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookRequest;
+use App\Http\Requests\CategoryRequest;
+use App\User;
 use Illuminate\Http\Request;
 use App\Book;
 
@@ -34,12 +37,14 @@ class BooksController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
+
         $book = new Book();
         $book->title = $request->title;
         $book->subtitle = $request->subtitle;
         $book->price = $request->price;
+        $book->author_id = $request->author;
         $book->save();
         return redirect()->route('books.index');
     }
@@ -73,17 +78,24 @@ class BooksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(BookRequest $request, $id)
     {
         if(!($book = Book::query()->find($id))){
             throw new ModelNotFoundException('Livro não encontrado ...');
         }
 
-        $data = $request->all();
-        $book->fill($data);
-        $book->save();
+        $logado = \Auth::user()->id;
 
-        return redirect()->route('books.index');
+        if ($logado == $book->author_id){
+            $data = $request->all();
+            $book->fill($data);
+            $book->save();
+            return redirect()->route('books.index');
+
+        }else{
+            return redirect()->route('books.index');
+        }
+
     }
 
     /**
@@ -94,7 +106,13 @@ class BooksController extends Controller
      */
     public function destroy(Book $book)
     {
-        $book->delete();
-        return redirect()->route('books.index');
+        $logado = \Auth::user()->id;
+
+        if ($logado == $book->author_id) {
+            $book->delete();
+            return redirect()->route('books.index');
+        }else{
+            return redirect()->route('books.index');
+        }
     }
 }

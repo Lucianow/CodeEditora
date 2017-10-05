@@ -41,5 +41,6 @@ $factory->define(App\Book::class, function (Faker $faker) {
         'title' => $faker->sentence(2),
         'subtitle' => $faker->sentence(4),
         'price' => $faker->randomFloat(2, 10, 80),
+        'user_id' => '1'
     ];
 });
