@@ -13,15 +13,7 @@
 
                 {{ method_field('PUT') }}
 
-                <div class="form-group has-warning">
-                    <label for="" class="col-sm-2 control-label">Categoria</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="name" value="{{ $category->name }}">
-                        <span class="help-block">
-                            <strong>{{ $errors->first('name') }}</strong>
-                        </span>
-                    </div>
-                </div>
+                @include('categories._form')
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
